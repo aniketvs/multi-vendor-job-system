@@ -1,0 +1,83 @@
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    ports:
+      - "3000:3000"
+    working_dir: /app/api
+    volumes:
+      - ./api:/app/api
+      - ./common:/app/common
+      - /app/api/node_modules
+    command: npm run dev
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - kafka
+
+  worker:
+    build:
+      context: .
+      dockerfile: ./worker/Dockerfile
+    working_dir: /app/worker
+    volumes:
+      - ./worker:/app/worker
+      - ./common:/app/common
+      - /app/worker/node_modules
+    command: npm run dev
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - kafka
+      - vendor-sync
+      - vendor-async
+
+  vendor-sync:
+    build:
+      context: .
+      dockerfile: ./vendor-sync/Dockerfile
+    working_dir: /app/vendor-sync
+    volumes:
+      - ./vendor-sync:/app/vendor-sync
+      - /app/vendor-sync/node_modules
+    command: npm run dev
+    ports:
+      - "4001:4001"
+
+  vendor-async:
+    build:
+      context: .
+      dockerfile: ./vendor-async/Dockerfile
+    working_dir: /app/vendor-async
+    volumes:
+      - ./vendor-async:/app/vendor-async
+      - /app/vendor-async/node_modules
+    command: npm run dev
+    ports:
+      - "4002:4002"
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
