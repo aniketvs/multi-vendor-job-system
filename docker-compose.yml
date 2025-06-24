@@ -12,6 +12,7 @@ services:
       - ./api:/app/api
       - ./common:/app/common
       - /app/api/node_modules
+      - ./.env:/app/api/.env
     command: npm run dev
     env_file:
       - .env
@@ -28,6 +29,7 @@ services:
       - ./worker:/app/worker
       - ./common:/app/common
       - /app/worker/node_modules
+      - ./.env:/app/api/.env
     command: npm run dev
     env_file:
       - .env
@@ -45,6 +47,7 @@ services:
     volumes:
       - ./vendor-sync:/app/vendor-sync
       - /app/vendor-sync/node_modules
+      - ./.env:/app/api/.env
     command: npm run dev
     ports:
       - "4001:4001"
@@ -57,6 +60,7 @@ services:
     volumes:
       - ./vendor-async:/app/vendor-async
       - /app/vendor-async/node_modules
+      - ./.env:/app/api/.env
     command: npm run dev
     ports:
       - "4002:4002"

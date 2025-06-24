@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const cleanResult = require("../common/cleanResult");
-
+require('dotenv').config({path:'/app/api/.env'})
 const app = express();
 app.use(express.json());
 
@@ -34,7 +34,7 @@ app.post("/vendor", async (req, res) => {
     res.json({ status: "accepted", request_id });
 });
 
-const PORT = 4002;
+const PORT = process.env.ASYNC_PORT  || 4002;
 app.listen(PORT, () => {
     console.log(`vendor-async running on port ${PORT}`);
 });

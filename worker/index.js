@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config({path:'/app/api/.env'})
 const connectDB = require("./config/db");
 const startKafkaConsumer = require("./services/kafkaConsumer");
 

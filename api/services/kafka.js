@@ -1,9 +1,10 @@
 const { Kafka } = require("kafkajs");
+require('dotenv').config();
 
 const kafka = new Kafka({
   clientId: "api-service",
-  brokers: ["kafka:9092"],
-});
+  brokers: [ "kafka:9092"],
+}); 
 
 const producer = kafka.producer();
 
