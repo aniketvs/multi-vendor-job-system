@@ -55,8 +55,14 @@ const vendorHost = vendor === "mock-sync-vendor" ? "vendor-sync" : "vendor-async
           console.error(`Vendor sync failed: ${request_id}`);
         }
       } else {
-       
-        console.log(`📤 Async job dispatched: ${request_id}`);
+       try {
+          await axios.post(`http://${vendorHost}:4002/vendor`, { request_id, payload });
+          console.log(`📤 Async job ${request_id} forwarded to ${vendor}`);
+        } catch (err) {
+          job.status = "failed";
+          await job.save();
+          console.error(`❌ Async vendor call failed:`, err.message);
+        }
      
       }
     } catch (err) {

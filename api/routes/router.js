@@ -5,5 +5,5 @@ const {vendorWebhook}=require('../controllers/vendorWebhookController');
 
 router.post("/jobs", createJob);
 router.get("/jobs/:request_id", getJobStatus);
-router.post("/vendor-webhook/:vendor", vendorWebhook);
+router.post("/vendor-webhook", vendorWebhook);
 module.exports = router;
