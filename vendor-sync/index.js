@@ -1,6 +1,6 @@
 const express = require("express");
 const cleanResult = require("../common/cleanResult");
-
+require('dotenv').config({path:'/app/api/.env'})
 const app = express();
 app.use(express.json());
 
@@ -27,7 +27,7 @@ const cleaned = cleanResult(payload);
 }
 });
 
-const PORT = 4001;
+const PORT = process.env.SYNC_PORT || 4001;
 app.listen(PORT, () => {
   console.log(`vendor-sync is running on port ${PORT}`);
 });
