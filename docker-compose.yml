@@ -34,8 +34,8 @@ services:
     depends_on:
       - mongo
       - kafka
-      - vendor-sync
-      - vendor-async
+      # - vendor-sync
+      # - vendor-async
 
   vendor-sync:
     build:
