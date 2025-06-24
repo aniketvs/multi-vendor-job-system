@@ -3,7 +3,6 @@ const Job = require("../model/job");
 
 exports.vendorWebhook = async (req, res) => {
   try {
-    const { vendor } = req.params;
     const { request_id, result } = req.body;
 
     if (!request_id || !result) {
@@ -20,13 +19,10 @@ exports.vendorWebhook = async (req, res) => {
       return res.status(200).json({ status: 'success', message: 'Job already completed' });
     }
 
-    const cleanedResult = cleanResult(result);
 
     job.status = "complete";
-    job.result = cleanedResult;
+    job.result = result?.payload;
     await job.save();
-
-    console.log(`Webhook received from ${vendor} for request_id ${request_id}`);
     return res.json({ status: "success" });
   } catch (err) {
     console.error("Error in webhook:", err);
