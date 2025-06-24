@@ -2,11 +2,11 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 export let options = {
-  vus: 100,           // Number of virtual users
-  duration: '30s',    // Duration of test
+  vus: 100,           
+  duration: '30s',    
 };
 
-const BASE_URL = 'http://localhost:3000'; // Container IP from your `docker inspect`
+const BASE_URL = 'http://localhost:3000'; 
 
 export default function () {
   const payload = JSON.stringify({
